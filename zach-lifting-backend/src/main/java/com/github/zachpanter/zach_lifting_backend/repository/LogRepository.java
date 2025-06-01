@@ -1,4 +1,4 @@
 package com.github.zachpanter.zach_lifting_backend.model;
 
-public class Product {
+public class LogRepository {
 }
