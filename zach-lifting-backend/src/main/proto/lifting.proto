@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package com.github.zachpanter.zach_lifting.protos; // Example package name
+
+import "google/protobuf/timestamp.proto"; // <--- ADD THIS LINE
+
+option java_multiple_files = true;
+option java_package = "com.example.fitness.protos"; // Generated Java package
+option java_outer_classname = "LiftingProto"; // Wrapper class if java_multiple_files is false
+
+// Corresponds to the 'lift' table
+message Lift {
+  int32 lift_id = 1;
+  string lift_name = 2;
+  int32 priority = 3;
+  int32 one_rm_max = 4;
+}
+
+// Corresponds to the 'muscle_group_lookup' table
+message MuscleGroup {
+  int32 muscle_group_id = 1;
+  string muscle_group_name = 2;
+}
+
+// Corresponds to the 'muscle' table
+message Muscle {
+  int32 muscle_id = 1;
+  string muscle_name = 2;
+  int32 muscle_group_id = 3; // Foreign key
+}
+
+// Corresponds to the 'lift_muscle_xref' table
+// This could be represented in various ways.
+// If it's just a join table, you might not need a dedicated message
+// if you're always fetching lifts with their muscles or vice-versa.
+// However, if you need to manage these relationships directly, a message is useful.
+message LiftMuscleXref {
+  int32 lift_id = 1;
+  int32 muscle_id = 2;
+}
+
+// Corresponds to the 'log' table
+message Log {
+  int32 log_id = 1;
+  google.protobuf.Timestamp timestamp = 2; // Using Google's well-known type for timestamps
+  int32 lift_id = 3;
+  int32 reps = 4;
+  int32 resistance = 5;
+}
+
+// You might also want messages for requests and responses, for example:
+message GetLiftRequest {
+  int32 lift_id = 1;
+}
+
+message CreateLiftRequest {
+  string lift_name = 1;
+  int32 priority = 2;
+  int32 one_rm_max = 3;
+}
+
+message GetLiftsResponse {
+  repeated Lift lifts = 1;
+}
